@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رِحال | مشغل اختبارات محرك التخطيط</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --color-bg: #060B08;
+      --color-card: #112019;
+      --color-primary: #006C35;
+      --color-accent: #D4AF37;
+      --color-text: #F3F7F5;
+      --color-text-muted: #8AA496;
+      --color-success: #2ecc71;
+      --color-fail: #e74c3c;
+      --color-border: #1D3429;
+    }
+    body {
+      font-family: 'Tajawal', 'Cairo', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      margin: 0;
+      padding: 2rem;
+      direction: rtl;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    h1 {
+      color: var(--color-accent);
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+    }
+    .summary-card {
+      background-color: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .stat-box {
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--color-accent);
+    }
+    .stat-num.passed {
+      color: var(--color-success);
+    }
+    .stat-num.failed {
+      color: var(--color-fail);
+    }
+    .stat-label {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+    .test-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .test-item {
+      background-color: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      transition: all 0.2s;
+    }
+    .test-item:hover {
+      transform: translateX(-3px);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+    .test-info {
+      flex: 1;
+    }
+    .test-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    .test-error {
+      color: var(--color-fail);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      background-color: rgba(231, 76, 60, 0.08);
+      border: 1px dashed rgba(231, 76, 60, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+    .badge {
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .badge.pass {
+      background-color: rgba(46, 204, 113, 0.15);
+      color: var(--color-success);
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+    .badge.fail {
+      background-color: rgba(231, 76, 60, 0.15);
+      color: var(--color-fail);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+    .btn-return {
+      display: inline-block;
+      margin-top: 2rem;
+      background-color: var(--color-primary);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    .btn-return:hover {
+      background-color: rgba(0, 108, 53, 0.8);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>نظام التحقق رِحال (Rihal Test Suite)</h1>
+      <p class="subtitle">فحص موثوقية خوارزمية تخطيط الرحلات الذكية وحساب قيود الزمان والمشي</p>
+    </header>
+
+    <div class="summary-card">
+      <div class="stat-box">
+        <div class="stat-num" id="total-tests">0</div>
+        <div class="stat-label">إجمالي الاختبارات</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num passed" id="passed-tests">0</div>
+        <div class="stat-label">الاختبارات الناجحة</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num failed" id="failed-tests">0</div>
+        <div class="stat-label">الاختبارات الفاشلة</div>
+      </div>
+    </div>
+
+    <div class="test-list" id="test-results-container">
+      <!-- Generated results will go here -->
+    </div>
+
+    <div style="text-align: center;">
+      <a href="/index.html" class="btn-return"><i class="fa-solid fa-arrow-right"></i> العودة لتطبيق رِحال</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { runAllTests } from "/src/services/planner.test.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const results = runAllTests();
+      
+      const totalEl = document.getElementById("total-tests");
+      const passedEl = document.getElementById("passed-tests");
+      const failedEl = document.getElementById("failed-tests");
+      const container = document.getElementById("test-results-container");
+
+      let passedCount = 0;
+      let failedCount = 0;
+
+      container.innerHTML = "";
+
+      results.forEach(res => {
+        const item = document.createElement("div");
+        item.className = "test-item";
+
+        let badgeHtml = "";
+        let errorHtml = "";
+
+        if (res.passed) {
+          passedCount++;
+          badgeHtml = `<span class="badge pass"><i class="fa-solid fa-check-double"></i> ناجح</span>`;
+        } else {
+          failedCount++;
+          badgeHtml = `<span class="badge fail"><i class="fa-solid fa-xmark"></i> فاشل</span>`;
+          errorHtml = `<div class="test-error"><i class="fa-solid fa-circle-exclamation"></i> خطأ التوكيد: ${res.error}</div>`;
+        }
+
+        item.innerHTML = `
+          <div class="test-info">
+            <div class="test-name">${res.name}</div>
+            ${errorHtml}
+          </div>
+          <div>${badgeHtml}</div>
+        `;
+        
+        container.appendChild(item);
+      });
+
+      totalEl.textContent = results.length;
+      passedEl.textContent = passedCount;
+      failedEl.textContent = failedCount;
+    });
+  </script>
+</body>
+</html>

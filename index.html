@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رِحال | خطط رحلتك الذكية في السعودية</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+  <!-- Background Glows -->
+  <div class="glow-bg glow-1"></div>
+  <div class="glow-bg glow-2"></div>
+
+  <!-- Loading Overlay for Replanning -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="loading-card">
+      <div class="spinner-container">
+        <div class="logo-spinner"></div>
+        <i class="fa-solid fa-compass compass-pulse"></i>
+      </div>
+      <h3 id="loading-title">رِحال يعيد جدولة رحلتك...</h3>
+      <p id="loading-sub">نحلل درجات الحرارة، أوقات الصلوات، وحركة المرور اللحظية</p>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <i class="fa-solid fa-compass-drafting logo-icon"></i>
+        <span class="logo-text">رِحال</span>
+      </div>
+      <div class="header-titles">
+        <h1 class="main-title">رحلتك تتكيف معك</h1>
+        <p class="subtitle">خطط رحلتك التفاعلية في ثوانٍ، ودع رِحال يتكيف فورياً مع الطقس، الزحام، أوقات الصلاة والظروف الطارئة.</p>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-content">
+      
+      <!-- SCREEN 1: Setup View -->
+      <section id="setup-screen" class="setup-card fade-in">
+        <h2 class="section-title"><i class="fa-solid fa-sliders text-gold"></i> صمم مسارك الذكي</h2>
+        
+        <form id="setup-form" onsubmit="event.preventDefault();">
+          
+          <!-- Destination Selection (Premium Cards) -->
+          <div class="form-group">
+            <label class="input-label">الوجهة السياحية</label>
+            <div class="destination-cards">
+              <div class="dest-card selected" data-dest="riyadh">
+                <div class="dest-img" style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.85)), url('/src/assets/riyadh.jpg');"></div>
+                <div class="dest-info">
+                  <h3>الرياض</h3>
+                  <p>العاصمة النابضة</p>
+                </div>
+                <div class="check-badge"><i class="fa-solid fa-check"></i></div>
+              </div>
+              <div class="dest-card" data-dest="alula">
+                <div class="dest-img" style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.85)), url('/src/assets/alula.jpg');"></div>
+                <div class="dest-info">
+                  <h3>العُـلا</h3>
+                  <p>الجبال والتاريخ والطبيعة</p>
+                </div>
+                <div class="check-badge"><i class="fa-solid fa-check"></i></div>
+              </div>
+              <div class="dest-card" data-dest="jeddah">
+                <div class="dest-img" style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.85)), url('/src/assets/jeddah.jpg');"></div>
+                <div class="dest-info">
+                  <h3>جـدة</h3>
+                  <p>البحر الأحمر وجدة التاريخية</p>
+                </div>
+                <div class="check-badge"><i class="fa-solid fa-check"></i></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <!-- Travelers count -->
+            <div class="form-group">
+              <label for="travelers-input" class="input-label">عدد المسافرين</label>
+              <div class="counter-input">
+                <button type="button" class="counter-btn" id="btn-dec-travelers"><i class="fa-solid fa-minus"></i></button>
+                <input type="number" id="travelers-input" value="2" min="1" max="20" readonly>
+                <button type="button" class="counter-btn" id="btn-inc-travelers"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+            
+            <!-- Trip Duration -->
+            <div class="form-group">
+              <label for="duration-input" class="input-label">مدة الرحلة</label>
+              <div class="counter-input">
+                <button type="button" class="counter-btn" id="btn-dec-duration"><i class="fa-solid fa-minus"></i></button>
+                <input type="number" id="duration-input" value="1" min="1" max="3" readonly>
+                <button type="button" class="counter-btn" id="btn-inc-duration"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interests Selection -->
+          <div class="form-group">
+            <label class="input-label">الاهتمامات المفضلة <span class="label-hint">(اختر ما يناسبك)</span></label>
+            <div class="interest-chips">
+              <button type="button" class="interest-chip selected" data-value="التاريخ">
+                <i class="fa-solid fa-landmark"></i> التاريخ
+              </button>
+              <button type="button" class="interest-chip selected" data-value="الطبيعة">
+                <i class="fa-solid fa-mountain-sun"></i> الطبيعة
+              </button>
+              <button type="button" class="interest-chip" data-value="التصوير">
+                <i class="fa-solid fa-camera-retro"></i> التصوير
+              </button>
+              <button type="button" class="interest-chip" data-value="الطعام">
+                <i class="fa-solid fa-utensils"></i> الطعام
+              </button>
+              <button type="button" class="interest-chip selected" data-value="الثقافة">
+                <i class="fa-solid fa-mosque"></i> الثقافة
+              </button>
+            </div>
+          </div>
+
+          <!-- Mobility / Accessibility -->
+          <div class="form-group">
+            <label class="input-label">معايير الحركة والوصول الميسّر</label>
+            <div class="mobility-cards">
+              <div class="mobility-card selected" data-mobility="normal">
+                <i class="fa-solid fa-person-walking icon"></i>
+                <div class="info">
+                  <h4>عادي / طبيعي</h4>
+                  <p>لا توجد عوائق حركة</p>
+                </div>
+              </div>
+              <div class="mobility-card" data-mobility="wheelchair">
+                <i class="fa-solid fa-wheelchair icon"></i>
+                <div class="info">
+                  <h4>كرسي متحرك</h4>
+                  <p>مسارات مستوية ومصاعد مهيأة</p>
+                </div>
+              </div>
+              <div class="mobility-card" data-mobility="elderly">
+                <i class="fa-solid fa-person-cane icon"></i>
+                <div class="info">
+                  <h4>كبار السن</h4>
+                  <p>مشي مريح ومحطات استراحة متقاربة</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <!-- Max Walking -->
+            <div class="form-group">
+              <label for="walking-select" class="input-label">الحد الأقصى للمشي لكل نشاط</label>
+              <select id="walking-select" class="premium-select">
+                <option value="500">حتى 500 متر (خفيف جداً)</option>
+                <option value="1000" selected>حتى 1 كيلومتر (معتدل)</option>
+                <option value="2000">حتى 2 كيلومتر (مستعد للمشي)</option>
+                <option value="5000">أكثر من 2 كيلومتر (مسافات طويلة)</option>
+              </select>
+            </div>
+
+            <!-- Daily Available Hours -->
+            <div class="form-group">
+              <label for="available-hours-select" class="input-label">ساعات التجول اليومية المتاحة</label>
+              <select id="available-hours-select" class="premium-select">
+                <option value="4">رحلة خفيفة (4 ساعات)</option>
+                <option value="6">رحلة متوسطة (6 ساعات)</option>
+                <option value="8" selected>يوم كامل (8 ساعات)</option>
+                <option value="10">يوم كامل مكثف (10 ساعات)</option>
+                <option value="12">أقصى تجوال (12 ساعة)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <!-- Start Time UX -->
+            <div class="form-group">
+              <label class="input-label">وقت بدء الرحلة المفضل</label>
+              <div class="time-picker-row">
+                <select id="starttime-hour" class="premium-select time-select">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9" selected>9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <span class="time-separator">:</span>
+                <select id="starttime-minute" class="premium-select time-select">
+                  <option value="00" selected>00</option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="45">45</option>
+                </select>
+                <select id="starttime-ampm" class="premium-select ampm-select">
+                  <option value="AM" selected>صباحًا</option>
+                  <option value="PM">مساءً</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Spacer element to balance layout -->
+            <div class="form-group"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="button" id="btn-generate" class="btn-primary btn-lg">
+            <span>خطط رحلتي الذكية</span>
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </button>
+        </form>
+      </section>
+
+      <!-- SCREEN 2: Itinerary View -->
+      <section id="itinerary-screen" class="itinerary-layout hidden">
+        
+        <!-- Sidebar: Constraints & Controls -->
+        <aside class="itinerary-sidebar">
+          
+          <!-- Selected City Hero -->
+          <div class="city-hero-card">
+            <div id="city-hero-img" class="city-hero-img"></div>
+            <div class="city-hero-overlay">
+              <span class="badge-accent">خطة نشطة</span>
+              <h2 id="itinerary-city-title">الرياض</h2>
+              <p id="itinerary-city-desc"></p>
+            </div>
+          </div>
+
+          <!-- Rihal Decisions / Constraints Panel -->
+          <div class="sidebar-box decisions-box">
+            <h3><i class="fa-solid fa-brain text-gold"></i> قرار رِحال (المحددات النشطة)</h3>
+            <ul id="decisions-list" class="decisions-list">
+              <!-- Populated dynamically -->
+            </ul>
+          </div>
+
+          <!-- Back to Setup -->
+          <button type="button" id="btn-edit-setup" class="btn-outline">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>تغيير المدخلات والتفضيلات</span>
+          </button>
+        </aside>
+
+        <!-- Itinerary Timeline Panel -->
+        <div class="itinerary-main">
+          
+          <!-- Dynamic Replanning Control Bar -->
+          <div class="replanning-panel">
+            <h3><i class="fa-solid fa-bolt text-gold animate-pulse"></i> تحكم تفاعلي بظروف الرحلة (إعادة التخطيط اللحظي)</h3>
+            <p class="panel-subtitle">تغيرت الظروف؟ اضغط على أحد العوامل لتحديث الخطة فوراً مع الحفاظ على تفضيلاتك الأساسية.</p>
+            
+            <div class="replanning-buttons">
+              <button type="button" class="replan-btn" data-type="heat" id="replan-heat">
+                <span class="btn-icon">🔥</span>
+                <span class="btn-label">الحرارة ارتفعت</span>
+              </button>
+              <button type="button" class="replan-btn" data-type="walking" id="replan-walking">
+                <span class="btn-icon">♿</span>
+                <span class="btn-label">قلل المشي</span>
+              </button>
+              <button type="button" class="replan-btn" data-type="traffic" id="replan-traffic">
+                <span class="btn-icon">🚗</span>
+                <span class="btn-label">الزحمة زادت</span>
+              </button>
+              <button type="button" class="replan-btn" data-type="prayer" id="replan-prayer">
+                <span class="btn-icon">🕌</span>
+                <span class="btn-label">أحتاج وقت للصلاة</span>
+              </button>
+              <button type="button" class="replan-btn btn-reset-plan" data-type="reset" id="replan-reset">
+                <span class="btn-icon"><i class="fa-solid fa-rotate-left"></i></span>
+                <span class="btn-label">أعد الخطة الأصلية</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Explanation Banner -->
+          <div id="explanation-banner" class="explanation-banner hidden">
+            <div class="banner-icon">
+              <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="banner-content">
+              <h4>ما الذي تغير في خطة رِحال؟</h4>
+              <p id="explanation-text"></p>
+            </div>
+          </div>
+
+          <!-- Day Tabs Selector (If > 1 day) -->
+          <div id="day-tabs-container" class="day-tabs">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Timeline Activities Container -->
+          <div id="timeline-container-wrapper" class="timeline-container">
+            <div class="timeline-line"></div>
+            <div id="activities-timeline" class="activities-list">
+              <!-- Cards populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Empty State View -->
+          <div id="empty-state-view" class="empty-state-card hidden">
+            <div class="empty-state-icon">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <h3>لم نجد أماكن مناسبة تمامًا لخياراتك الحالية.</h3>
+            <p>جرّب توسيع الاهتمامات، أو زيادة ساعات التجول، أو تقليل قيود الحركة والمشي.</p>
+            <button type="button" id="btn-reset-setup-empty" class="btn-primary">
+              <span>تعديل خيارات الرحلة</span>
+              <i class="fa-solid fa-sliders"></i>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>رِحال (Rihal) - مشروع ابتكاري مصمم لمنصة الابتكار السياحي بالمملكة العربية السعودية 🇸🇦 ٢٠٢٦</p>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
